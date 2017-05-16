@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.common.EntityFactory
 import com.obstacle.avoid.config.GameConfig
+import com.obstacle.avoid.system.PlayerSystem
 import com.obstacle.avoid.system.debug.DebugCameraSystem
 import com.obstacle.avoid.system.debug.DebugRenderSystem
 import com.obstacle.avoid.system.debug.GridRenderSystem
@@ -27,6 +28,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(GridRenderSystem(viewport, renderer))
             addSystem(DebugCameraSystem(camera, GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y))
             addSystem(DebugRenderSystem(viewport, renderer))
+            addSystem(PlayerSystem())
         }
 
         factory.addPlayer()
