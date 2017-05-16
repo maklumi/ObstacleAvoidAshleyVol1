@@ -9,6 +9,7 @@ import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.common.EntityFactory
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.system.debug.DebugCameraSystem
+import com.obstacle.avoid.system.debug.DebugRenderSystem
 import com.obstacle.avoid.system.debug.GridRenderSystem
 import com.obstacle.avoid.util.GdxUtils
 
@@ -25,6 +26,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
         engine.apply {
             addSystem(GridRenderSystem(viewport, renderer))
             addSystem(DebugCameraSystem(camera, GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y))
+            addSystem(DebugRenderSystem(viewport, renderer))
         }
 
         factory.addPlayer()
