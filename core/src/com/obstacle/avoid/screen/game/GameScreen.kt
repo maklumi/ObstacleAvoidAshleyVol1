@@ -21,6 +21,7 @@ import com.obstacle.avoid.util.GdxUtils
 
 
 class GameScreen(val game: ObstacleAvoidGame) : Screen {
+    private val DEBUG = false
 
     private val camera = OrthographicCamera()
     private val viewport = FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera)
@@ -49,9 +50,6 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
 
     override fun show() {
         engine.apply {
-            addSystem(GridRenderSystem(viewport, renderer))
-            addSystem(DebugCameraSystem(camera, GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y))
-            addSystem(DebugRenderSystem(viewport, renderer))
             addSystem(PlayerSystem())
             addSystem(MovementSystem())
             addSystem(ObstacleSpawnSystem(factory))
@@ -64,7 +62,13 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(HudRenderSystem(hudViewport, game.batch, font))
         }
 
-        factory.addPlayer()
+        if (DEBUG) {
+            engine.addSystem(GridRenderSystem(viewport, renderer))
+            engine.addSystem(DebugRenderSystem(viewport, renderer))
+            engine.addSystem(DebugCameraSystem(camera, GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y))
+        }
+
+        addEntities()
 
     }
 
