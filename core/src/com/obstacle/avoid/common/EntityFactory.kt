@@ -1,10 +1,7 @@
 package com.obstacle.avoid.common
 
 import com.badlogic.ashley.core.PooledEngine
-import com.obstacle.avoid.component.BoundsComponent
-import com.obstacle.avoid.component.MovementComponent
-import com.obstacle.avoid.component.PlayerComponent
-import com.obstacle.avoid.component.PositionComponent
+import com.obstacle.avoid.component.*
 import com.obstacle.avoid.config.GameConfig
 
 
@@ -26,11 +23,15 @@ class EntityFactory(private val engine: PooledEngine) {
         position.x = x
         position.y = y
 
+        val worldWrap = engine.createComponent(WorldWrapComponent::class.java)
+
         val entity = engine.createEntity().apply {
             add(bounds)
             add(movement)
             add(player)
             add(position)
+            add(worldWrap)
+
         }
 
         engine.addEntity(entity)
