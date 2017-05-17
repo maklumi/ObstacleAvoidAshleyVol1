@@ -37,5 +37,28 @@ class EntityFactory(private val engine: PooledEngine) {
         engine.addEntity(entity)
     }
 
+    fun addObstacle(x: Float, y: Float) {
+        val bounds = engine.createComponent(BoundsComponent::class.java).apply {
+            bounds.set(x, y, GameConfig.OBSTACLE_BOUNDS_RADIUS)
+        }
 
+        val movement = engine.createComponent(MovementComponent::class.java).apply {
+            ySpeed = -GameManager.difficultyLevel.obstacleSpeed
+        }
+
+        val position = engine.createComponent(PositionComponent::class.java).apply {
+            this.x = x
+            this.y = y
+        }
+
+        val entity = engine.createEntity().apply {
+            add(bounds)
+            add(movement)
+            add(position)
+//            add(engine.createComponent(WorldWrapComponent::class.java))
+
+        }
+
+        engine.addEntity(entity)
+    }
 }
