@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.ObstacleAvoidGame
+import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.common.EntityFactory
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.system.*
@@ -23,6 +24,8 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
     private val renderer = ShapeRenderer()
     private val engine = PooledEngine()
     private val factory = EntityFactory(engine)
+    private val hudViewport = FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT)
+    private val font = game.assetManager.get(AssetDescriptors.FONT)
 
     override fun show() {
         engine.apply {
@@ -36,6 +39,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(CollisionSystem())
             addSystem(WorldWrapSystem(viewport))
             addSystem(BoundsSystem())
+            addSystem(HudRenderSystem(hudViewport, game.batch, font))
         }
 
         factory.addPlayer()
@@ -49,6 +53,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height, true)
+        hudViewport.update(width, height, true)
     }
 
     override fun hide() {

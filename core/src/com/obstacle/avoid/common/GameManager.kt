@@ -3,6 +3,7 @@ package com.obstacle.avoid.common
 import com.badlogic.gdx.Gdx
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.config.DifficultyLevel
+import com.obstacle.avoid.config.GameConfig
 
 object GameManager {
 
@@ -14,6 +15,8 @@ object GameManager {
     var highScore = pref.getInteger(HIGH_SCORE_KEY, 0)
     private var difficulty = pref.getString(DIFFICULTY_KEY, DifficultyLevel.MEDIUM.name)
     var difficultyLevel = DifficultyLevel.valueOf(difficulty)
+    var lives = GameConfig.LIVES_START
+    var score = 0
 
     fun updateHighScore(score: Int) {
         if (score < highScore) return
