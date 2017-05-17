@@ -31,6 +31,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(PlayerSystem())
             addSystem(MovementSystem())
             addSystem(ObstacleSpawnSystem(factory))
+            addSystem(CleanUpSystem())
             addSystem(WorldWrapSystem(viewport))
             addSystem(BoundsSystem())
         }
