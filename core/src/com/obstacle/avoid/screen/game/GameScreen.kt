@@ -9,6 +9,7 @@ import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.common.EntityFactory
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.system.*
+import com.obstacle.avoid.system.collision.CollisionSystem
 import com.obstacle.avoid.system.debug.DebugCameraSystem
 import com.obstacle.avoid.system.debug.DebugRenderSystem
 import com.obstacle.avoid.system.debug.GridRenderSystem
@@ -32,6 +33,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(MovementSystem())
             addSystem(ObstacleSpawnSystem(factory))
             addSystem(CleanUpSystem())
+            addSystem(CollisionSystem())
             addSystem(WorldWrapSystem(viewport))
             addSystem(BoundsSystem())
         }
