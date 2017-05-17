@@ -4,13 +4,11 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.graphics.profiling.GLProfiler.listener
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.common.EntityFactory
 import com.obstacle.avoid.common.GameManager
-import com.obstacle.avoid.common.GameManager.updateHighScore
 import com.obstacle.avoid.config.GameConfig
 import com.obstacle.avoid.screen.menu.MenuScreen
 import com.obstacle.avoid.system.*
@@ -59,6 +57,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(ObstacleSpawnSystem(factory))
             addSystem(CleanUpSystem())
             addSystem(CollisionSystem(listener))
+            addSystem(ScoreSystem())
             addSystem(WorldWrapSystem(viewport))
             addSystem(BoundsSystem())
             addSystem(HudRenderSystem(hudViewport, game.batch, font))
@@ -73,6 +72,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
         engine.update(delta)
 
         if (GameManager.isGameOver) {
+            GameManager.reset()
             game.screen = MenuScreen(game)
         }
 

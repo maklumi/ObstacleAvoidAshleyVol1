@@ -39,4 +39,12 @@ object GameManager {
         lives--
     }
 
+    fun reset() {
+        lives = GameConfig.LIVES_START
+        score = 0
+    }
+
+    fun updateScore(amount: Int) {
+        score += amount
+    }
 }
