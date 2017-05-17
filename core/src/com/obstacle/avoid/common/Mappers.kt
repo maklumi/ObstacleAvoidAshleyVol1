@@ -1,10 +1,7 @@
 package com.obstacle.avoid.common
 
 import com.badlogic.ashley.core.ComponentMapper
-import com.obstacle.avoid.component.BoundsComponent
-import com.obstacle.avoid.component.MovementComponent
-import com.obstacle.avoid.component.ObstacleComponent
-import com.obstacle.avoid.component.PositionComponent
+import com.obstacle.avoid.component.*
 
 
 object Mappers {
@@ -16,5 +13,9 @@ object Mappers {
     val POSITION: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent::class.java)
 
     val OBSTACLE: ComponentMapper<ObstacleComponent> = ComponentMapper.getFor(ObstacleComponent::class.java)
+
+    val TEXTURE: ComponentMapper<TextureComponent> = ComponentMapper.getFor(TextureComponent::class.java)
+
+    val DIMENSION: ComponentMapper<DimensionComponent> = ComponentMapper.getFor(DimensionComponent::class.java)
 
 }

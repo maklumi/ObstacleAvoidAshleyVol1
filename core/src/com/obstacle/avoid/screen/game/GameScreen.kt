@@ -26,7 +26,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
     private val viewport = FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera)
     private val renderer = ShapeRenderer()
     private val engine = PooledEngine()
-    private val factory = EntityFactory(engine)
+    private val factory = EntityFactory(engine, game.assetManager)
     private val hudViewport = FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT)
     private val font = game.assetManager.get(AssetDescriptors.FONT)
     private val hit = game.assetManager.get(AssetDescriptors.HIT_SOUND)
@@ -60,6 +60,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(ScoreSystem())
             addSystem(WorldWrapSystem(viewport))
             addSystem(BoundsSystem())
+            addSystem(RenderSystem(viewport, game.batch))
             addSystem(HudRenderSystem(hudViewport, game.batch, font))
         }
 
@@ -83,6 +84,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
     }
 
     private fun addEntities() {
+        factory.addBackground()
         factory.addPlayer()
     }
 
