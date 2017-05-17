@@ -4,19 +4,15 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.utils.ImmutableArray
-import com.badlogic.gdx.graphics.profiling.GLProfiler.listener
 import com.badlogic.gdx.math.Intersector
-import com.badlogic.gdx.utils.Logger
 import com.obstacle.avoid.common.Mappers
 import com.obstacle.avoid.component.BoundsComponent
 import com.obstacle.avoid.component.ObstacleComponent
 import com.obstacle.avoid.component.PlayerComponent
 
 
-class CollisionSystem : EntitySystem() {
+class CollisionSystem(private val listener: CollisionListener) : EntitySystem() {
 
-    private val log = Logger(CollisionSystem::class.java.simpleName, Logger.DEBUG)
-//    private var counter = 0
     companion object {
         private val PLAYER_FAMILY = Family.all(
                 PlayerComponent::class.java,
@@ -44,8 +40,7 @@ class CollisionSystem : EntitySystem() {
 
                 if (checkCollision(playerEntity, obstacleEntity)) {
                     obstacle.hit = true
-//                    counter++
-//                    log.debug("collision $counter")
+                    listener.hitObstacle()
                 }
             }
         }

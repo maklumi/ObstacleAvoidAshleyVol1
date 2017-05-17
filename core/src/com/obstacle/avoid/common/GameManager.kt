@@ -18,7 +18,10 @@ object GameManager {
     var lives = GameConfig.LIVES_START
     var score = 0
 
-    fun updateHighScore(score: Int) {
+    val isGameOver: Boolean
+        get() = lives <= 0
+
+    fun updateHighScore() {
         if (score < highScore) return
         highScore = score
         pref.putInteger(HIGH_SCORE_KEY, highScore)
@@ -31,4 +34,9 @@ object GameManager {
         pref.putString(DIFFICULTY_KEY, difficultyLevel.name)
         pref.flush()
     }
+
+    fun decrementLives() {
+        lives--
+    }
+
 }

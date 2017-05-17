@@ -4,12 +4,17 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.graphics.profiling.GLProfiler.listener
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.obstacle.avoid.ObstacleAvoidGame
 import com.obstacle.avoid.assets.AssetDescriptors
 import com.obstacle.avoid.common.EntityFactory
+import com.obstacle.avoid.common.GameManager
+import com.obstacle.avoid.common.GameManager.updateHighScore
 import com.obstacle.avoid.config.GameConfig
+import com.obstacle.avoid.screen.menu.MenuScreen
 import com.obstacle.avoid.system.*
+import com.obstacle.avoid.system.collision.CollisionListener
 import com.obstacle.avoid.system.collision.CollisionSystem
 import com.obstacle.avoid.system.debug.DebugCameraSystem
 import com.obstacle.avoid.system.debug.DebugRenderSystem
@@ -26,6 +31,23 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
     private val factory = EntityFactory(engine)
     private val hudViewport = FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT)
     private val font = game.assetManager.get(AssetDescriptors.FONT)
+    private val hit = game.assetManager.get(AssetDescriptors.HIT_SOUND)
+    private var reset: Boolean = false
+
+    private val listener = object : CollisionListener {
+        override fun hitObstacle() {
+            GameManager.decrementLives()
+            hit.play()
+
+            if (GameManager.isGameOver) {
+                GameManager.updateHighScore()
+            } else {
+                engine.removeAllEntities()
+                reset = true
+            }
+        }
+    }
+
 
     override fun show() {
         engine.apply {
@@ -36,7 +58,7 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
             addSystem(MovementSystem())
             addSystem(ObstacleSpawnSystem(factory))
             addSystem(CleanUpSystem())
-            addSystem(CollisionSystem())
+            addSystem(CollisionSystem(listener))
             addSystem(WorldWrapSystem(viewport))
             addSystem(BoundsSystem())
             addSystem(HudRenderSystem(hudViewport, game.batch, font))
@@ -49,6 +71,19 @@ class GameScreen(val game: ObstacleAvoidGame) : Screen {
     override fun render(delta: Float) {
         GdxUtils.clearScreen()
         engine.update(delta)
+
+        if (GameManager.isGameOver) {
+            game.screen = MenuScreen(game)
+        }
+
+        if (reset) {
+            reset = false
+            addEntities()
+        }
+    }
+
+    private fun addEntities() {
+        factory.addPlayer()
     }
 
     override fun resize(width: Int, height: Int) {

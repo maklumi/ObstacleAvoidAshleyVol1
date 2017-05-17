@@ -57,7 +57,7 @@ class GameController(game: ObstacleAvoidGame) {
             hitSound.play()
             lives--
             if (isGameOver) {
-                GameManager.updateHighScore(score)
+//                GameManager.updateHighScore()
             } else {
                 restart()
 
